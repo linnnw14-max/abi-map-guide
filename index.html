@@ -173,7 +173,37 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--amber);outline-
   .search{width:140px}
   .panel{position:absolute;left:0;right:0;bottom:0;width:auto;max-height:55%;border-left:0;border-top:1px solid var(--line);z-index:30;box-shadow:0 -8px 24px rgba(0,0,0,.5)}
 }
-/*BOSSCSS*/.p-info{white-space:pre-line;line-height:1.7}.mk.g-boss{width:16px;height:16px;z-index:6}.mk.g-boss::after{content:"";position:absolute;inset:-6px;border-radius:50%;border:1.5px solid #ff5c56;animation:bp 1.8s ease-out infinite;pointer-events:none}@keyframes bp{0%{transform:scale(.55);opacity:.75}100%{transform:scale(1.5);opacity:0}}@media (prefers-reduced-motion:reduce){.mk.g-boss::after{animation:none;opacity:.4}}</style>
+/*BOSSCSS*/.p-info{white-space:pre-line;line-height:1.7}.mk.g-boss{width:16px;height:16px;z-index:6}.mk.g-boss::after{content:"";position:absolute;inset:-6px;border-radius:50%;border:1.5px solid #ff5c56;animation:bp 1.8s ease-out infinite;pointer-events:none}@keyframes bp{0%{transform:scale(.55);opacity:.75}100%{transform:scale(1.5);opacity:0}}@media (prefers-reduced-motion:reduce){.mk.g-boss::after{animation:none;opacity:.4}}/*POLISH*/
+.panel{width:400px}
+.panel-in{padding:16px 18px 22px}
+.p-cat{font-size:11px;letter-spacing:.08em}
+.p-title{font-size:18px;line-height:1.4;margin:6px 0 4px}
+.p-meta{display:flex;gap:6px;margin:4px 0 10px;flex-wrap:wrap}
+.p-meta span{border:1px solid var(--line);border-radius:4px;padding:1px 8px;font-size:11.5px;color:var(--ink-3)}
+.p-info{font-size:13.5px;line-height:1.85;color:var(--ink-2)}
+.ptag{display:block;margin:13px 0 2px;color:var(--amber);font-weight:600;font-size:12.5px;letter-spacing:.06em}
+.ptag::before{content:"";display:inline-block;width:3px;height:11px;background:var(--amber);margin-right:7px;border-radius:1px;vertical-align:-1px}
+.dgr{display:inline-block;font-weight:700;font-size:12.5px;border-radius:5px;padding:3px 10px;margin:2px 0 6px}
+.dgr-x{color:#ff6b64;border:1px solid rgba(255,107,100,.4);background:rgba(255,107,100,.08)}
+.dgr-h{color:#e08a4e;border:1px solid rgba(224,138,78,.4);background:rgba(224,138,78,.08)}
+.dgr-m{color:var(--amber);border:1px solid var(--amber-dim);background:rgba(217,164,65,.08)}
+.dgr-l{color:#7fb069;border:1px solid rgba(127,176,105,.4);background:rgba(127,176,105,.08)}
+.p-loot{margin-top:12px}
+.p-loot b{font-size:12px;color:var(--ink-3);font-weight:600;letter-spacing:.05em}
+.p-loot ul{list-style:none;padding:0;margin:6px 0 0;display:grid;grid-template-columns:1fr 1fr;gap:3px 12px}
+.p-loot li{font-size:12.5px;color:var(--ink-2);border-left:2px solid var(--line);padding-left:8px;line-height:1.6}
+.rsc{margin-top:14px;border-top:1px solid var(--line);padding-top:12px}
+.rsc h4{margin:8px 0 6px;font-size:15px}
+.rf{display:flex;gap:10px;margin:7px 0}
+.rf .l{flex:0 0 2.8em;color:var(--ink-3);font-size:12px;letter-spacing:.1em;padding-top:2px}
+.rf .v{flex:1;font-size:13px;line-height:1.75;color:var(--ink-2)}
+.p-note{margin-top:14px;font-size:11px;color:var(--ink-3);opacity:.8}
+.lbl{text-shadow:0 1px 3px rgba(0,0,0,.95),0 0 9px rgba(0,0,0,.75);letter-spacing:.08em}
+.panel::-webkit-scrollbar{width:8px}
+.panel::-webkit-scrollbar-thumb{background:var(--line);border-radius:4px}
+.panel::-webkit-scrollbar-track{background:transparent}
+@media (max-width:760px){.panel{width:auto}}
+</style>
 
 <div class="top">
   <div class="top-row">
@@ -676,5 +706,25 @@ document.addEventListener('click', function(e){ if (!e.target.closest('.search-w
 })();
 
 setMap('farm');
+})();
+</script>
+
+<script>/*POLISHJS*/
+(function(){
+  var p=document.getElementById('panel'); if(!p||!window.MutationObserver) return;
+  function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+  function enh(){
+    var el=p.querySelector('.p-info'); if(!el||el.dataset.x) return;
+    var t=el.textContent;
+    if(t.indexOf('\u3010')===-1 && t.indexOf('\u5A01\u80C1\u5EA6')!==0){ el.dataset.x='1'; return; }
+    var h=esc(t);
+    h=h.replace(/^\u5A01\u80C1\u5EA6\uFF1A(\u6781\u9AD8|\u9AD8|\u4E2D|\u4F4E)\s*/,function(m,d){
+      var c=d==='\u6781\u9AD8'?'x':d==='\u9AD8'?'h':d==='\u4E2D'?'m':'l';
+      return '<span class="dgr dgr-'+c+'">\u5A01\u80C1\u5EA6 \u00B7 '+d+'</span>';
+    });
+    h=h.replace(/\u3010([^\u3011]{1,10})\u3011/g,'<span class="ptag">$1</span>');
+    el.innerHTML=h; el.dataset.x='1';
+  }
+  new MutationObserver(enh).observe(p,{childList:true,subtree:false});
 })();
 </script>
